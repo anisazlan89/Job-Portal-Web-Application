@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CariKerja</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/static/css/style.css"/>
+</head>
+<body>
+<header class="navbar">
+    <div class="container nav-inner">
+        <a th:href="@{/}" href="#" class="logo">
+            <span class="logo-main" th:text="${brandLeft != null ? brandLeft : 'CariKerja'}"></span>
+        </a>
+        <nav class="nav-links">
+            <a class="btn btn-primary" th:href="@{/candidate/login}">Sign in</a>
+            <a class="btn btn-outline" th:href="@{/recruiter/login}">Recruiter</a>
+        </nav>
+    </div>
+</header>
+
+<section class="hero hero--illustration"
+         th:style="|background-image: url(${heroImageUrl != null ? heroImageUrl : '/img/jobseeker.png'})|">
+    <div class="overlay"></div>
+
+    <div class="hero-content">
+        <form class="search-box" th:action="@{/search}" method="get">
+            <input type="text" name="q"   placeholder="Search for a job" aria-label="Search for a job" th:value="${param.q}" />
+            <input type="text" name="loc" placeholder="Enter a location" aria-label="Enter a location" th:value="${param.loc}" />
+            <button class="search__btn" type="submit" aria-label="Search">
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                    <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                          d="M11 19a8 8 0 1 1 5.657-2.343L22 22m-6-6l6 6"/>
+                </svg>
+            </button>
+        </form>
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="container">
+        © <span th:text="${T(java.time.Year).now()}"></span> CariKerja. All rights reserved.
+    </div>
+</footer>
+
+</body>
+</html>
