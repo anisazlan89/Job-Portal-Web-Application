@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Sign Up</title>
+</head>
+
+<body>
+<section>
+    <h1>Sign Up</h1>
+
+    <!-- Error message -->
+    <div th:if="${error}">
+        <p th:text="${error}"></p>
+    </div>
+
+    <form th:action="@{/register/new}" th:object="${user}" method="post">
+        <!-- Email -->
+        <div>
+            <label for="email">Email</label><br />
+            <input id="email" name="email" th:field="*{email}" type="email" required />
+        </div>
+
+        <!-- Password -->
+        <div>
+            <label for="password">Password (min 8)</label><br />
+            <input id="password" name="password" th:field="*{password}" type="password" minlength="8" required />
+        </div>
+
+        <!-- User Type -->
+        <div>
+            <label for="userTypeId">User Type</label><br />
+            <select id="userTypeId" th:field="*{userTypeId}" required>
+                <option value="" disabled selected>Select a role</option>
+                <option th:each="t : ${getAllTypes}"
+                        th:value="${t.userTypeId}"
+                        th:text="${t.userTypeName}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Submit -->
+        <div style="margin-top:1rem;">
+            <button type="submit">Save</button>
+        </div>
+    </form>
+</section>
+</body>
+</html>
