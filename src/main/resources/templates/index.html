@@ -24,7 +24,7 @@
     <div class="overlay"></div>
 
     <div class="hero-content">
-        <form class="search-box" th:action="@{/search}" method="get">
+        <form class="search-box" th:action="@{/global-search}" method="get">
             <input type="text" name="q"   placeholder="Search for a job" aria-label="Search for a job" th:value="${param.q}" />
             <input type="text" name="loc" placeholder="Enter a location" aria-label="Enter a location" th:value="${param.loc}" />
             <button class="search__btn" type="submit" aria-label="Search">
