@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 public class RecruiterProfile {
     @Id
     private int userAccountId;
+    //stores the foreign-key pointing to Users table.
     @OneToOne
     @JoinColumn(name="user_account_id")
     @MapsId
