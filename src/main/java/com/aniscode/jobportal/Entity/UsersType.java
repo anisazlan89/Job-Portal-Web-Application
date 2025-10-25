@@ -11,6 +11,8 @@ public class UsersType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int userTypeId;
+
+    //Job Seeker or Recruiter
     private String userTypeName;
 
     //optional. Only give convenient navigation from UsersType to Users
