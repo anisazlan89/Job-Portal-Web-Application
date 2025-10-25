@@ -41,6 +41,7 @@ public class WebSecurityConfig {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        //provider
         http.authenticationProvider(authenticationProvider());
 
         http.authorizeHttpRequests(auth ->
@@ -60,9 +61,10 @@ public class WebSecurityConfig {
                         .logoutSuccessUrl("/")).cors(Customizer.withDefaults()).csrf(csrf->csrf.disable());
         return http.build();
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
-
+        //create an instance of DaoAuthentication"Provider"
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(customUserDetailsService);
         //tells Spring how to check the raw password from the form against the stored hash in database.
         authProvider.setPasswordEncoder(passwordEncoder());
