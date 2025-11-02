@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Profile Setup</title>
+</head>
+
+<body>
+<h1 style="text-align:center;">Recruiter</h1>
+<h2 style="text-align:center;">Set up your Profile</h2>
+
+<form th:action="@{/recruiter-profile/addNew}"
+      th:object="${profile}"
+      method="post"
+      enctype="multipart/form-data">
+
+    <!-- Name -->
+    <label for="firstName">First Name</label>
+    <input id="firstName" th:field="*{firstName}" type="text" />
+
+    <br/>
+
+    <label for="lastName">Last Name</label>
+    <input id="lastName" th:field="*{lastName}" type="text" />
+
+    <br/>
+
+    <!-- Location -->
+    <label for="city">City</label>
+    <input id="city" th:field="*{city}" type="text" />
+
+    <br/>
+
+    <label for="state">State</label>
+    <input id="state" th:field="*{state}" type="text" />
+
+    <br/>
+
+    <label for="country">Country</label>
+    <input id="country" th:field="*{country}" type="text" />
+
+    <br/>
+
+    <!-- Company -->
+    <label for="company">Company</label>
+    <input id="company" th:field="*{company}" type="text" />
+
+    <br/>
+
+    <!-- Profile Photo -->
+    <label for="image">Profile Photo</label>
+    <input id="image" type="file" name="image" accept="image/png, image/jpeg" />
+    <!-- keep filename in entity -->
+    <input th:field="*{profilePhoto}" type="text" hidden />
+
+    <br/><br/>
+
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>

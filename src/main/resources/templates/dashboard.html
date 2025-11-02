@@ -14,15 +14,24 @@
 
     <nav>
         <ul>
-            <li><a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/dashboard}">Search for Jobs</a></li>
-            <li><a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/saved-jobs}">View Saved Jobs</a></li>
-            <li><a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/job-seeker-profile}">Edit Profile</a></li>
+            <li><a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/dashboard/}">Search for Jobs</a></li>
+            <li><a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/saved-jobs/}">View Saved Jobs</a></li>
+            <li><a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/job-seeker-profile/}">Edit Profile</a></li>
 
             <li><a sec:authorize="hasAuthority('Recruiter')" th:href="@{/dashboard/add}">Post New Job</a></li>
-            <li><a sec:authorize="hasAuthority('Recruiter')" th:href="@{/dashboard}">View Your Jobs</a></li>
-            <li><a sec:authorize="hasAuthority('Recruiter')" th:href="@{/recruiter-profile}">Edit Account</a></li>
+            <li><a sec:authorize="hasAuthority('Recruiter')" th:href="@{/dashboard/}">View Your Jobs</a></li>
+            <li><a sec:authorize="hasAuthority('Recruiter')" th:href="@{/recruiter-profile/}">Edit Account</a></li>
         </ul>
+
+
     </nav>
+    <img
+            class="rounded-circle me-3"
+            height="50px"
+            width="50x"
+            th:if="${user.photosImagePath!=null}"
+            th:src="@{${user?.photosImagePath}}"
+    />
 
     <p>
         <span th:if="${user.firstName != null && user.lastName != null}"
