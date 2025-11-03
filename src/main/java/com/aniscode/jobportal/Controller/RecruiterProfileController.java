@@ -68,18 +68,21 @@ public class RecruiterProfileController {
 
         //Set Image name in recruiter profile
         String fileName = "";
-        if (!multipartFile.getOriginalFilename().isEmpty()) {
+        if (!multipartFile.getOriginalFilename().equals("")) {
             fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
             recruiterProfile.setProfilePhoto(fileName);
         }
+
+        //Save the profile to the database
         RecruiterProfile savedUser = recruiterProfileService.addNew(recruiterProfile);
 
-        String uploadDirectory = "photos/recruiter/" + savedUser.getUserAccountId();
+        //Build the disk folder path for the image
+        String uploadDir = "photos/recruiter/" + savedUser.getUserAccountId();
         //Read profile image from request - multipart file
         //Save image on the server in directory photos/recruiter/
         try {
-            FileUploadUtil.saveFile(uploadDirectory, fileName, multipartFile);
-        }catch (Exception ex){
+            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 

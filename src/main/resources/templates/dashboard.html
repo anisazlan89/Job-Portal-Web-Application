@@ -23,15 +23,17 @@
             <li><a sec:authorize="hasAuthority('Recruiter')" th:href="@{/recruiter-profile/}">Edit Account</a></li>
         </ul>
 
+        <img
+                class="rounded-circle me-3"
+                height="50px"
+                width="50x"
+                th:if="${user.photosImagePath!=null}"
+                th:src="@{${user?.photosImagePath}}"
+        />
+
 
     </nav>
-    <img
-            class="rounded-circle me-3"
-            height="50px"
-            width="50x"
-            th:if="${user.photosImagePath!=null}"
-            th:src="@{${user?.photosImagePath}}"
-    />
+
 
     <p>
         <span th:if="${user.firstName != null && user.lastName != null}"
