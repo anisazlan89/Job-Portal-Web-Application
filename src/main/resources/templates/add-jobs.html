@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Post New Job</title>
+
+    <!-- Summernote Lite CSS (via WebJars) -->
+    <link th:href="@{/webjars/summernote/dist/summernote-lite.min.css}" rel="stylesheet"/>
+</head>
+<body>
+
+<h1 style="text-align:center; margin:12px 0;">Post New Job</h1>
+
+<form th:action="@{/dashboard/addNew}" th:object="${jobPostActivity}" method="post">
+
+    <!-- Hidden IDs (keep if your controller expects them) -->
+    <input type="text" th:field="*{jobPostId}" hidden />
+    <input type="text" th:field="*{jobLocationId.id}" hidden />
+    <input type="text" th:field="*{jobCompanyId.id}" hidden />
+
+    <label for="title">Job Title</label><br/>
+    <input id="title" type="text" th:field="*{jobTitle}" placeholder="Job Title"/><br/><br/>
+
+    <label for="type">Employment Type</label><br/>
+    <select id="type" th:field="*{jobType}">
+        <option value="">Employment Type</option>
+        <option th:value="Full-time">Full-time</option>
+        <option th:value="Part-time">Part-time</option>
+        <option th:value="Freelance">Freelance</option>
+        <option th:value="Internship">Internship</option>
+    </select><br/><br/>
+
+    <label for="remote">Remote</label><br/>
+    <select id="remote" th:field="*{remote}">
+        <option value="">Select a Remote</option>
+        <option th:value="Remote-Only">Remote-Only</option>
+        <option th:value="Office-Only">Office-Only</option>
+        <option th:value="Partial-Remote">Partial-Remote</option>
+    </select><br/><br/>
+
+    <label for="salary">Salary</label><br/>
+    <input id="salary" th:field="*{salary}" type="text" placeholder="Salary"/><br/><br/>
+
+    <label for="content">Description</label><br/>
+    <!-- Summernote will enhance this textarea; it posts HTML into descriptionOfJob -->
+    <textarea id="content" rows="8" th:field="*{descriptionOfJob}" placeholder="Write the job description..."></textarea>
+    <br/><br/>
+
+    <fieldset style="border:1px solid #ddd; padding:12px;">
+        <legend>Location</legend>
+        <label for="city">City</label><br/>
+        <input id="city" th:field="*{jobLocationId.city}" type="text" placeholder="City"/><br/><br/>
+
+        <label for="state">State</label><br/>
+        <input id="state" th:field="*{jobLocationId.state}" type="text" placeholder="State"/><br/><br/>
+
+        <label for="country">Country</label><br/>
+        <input id="country" th:field="*{jobLocationId.country}" type="text" placeholder="Country"/>
+    </fieldset>
+    <br/>
+
+    <label for="companyName">Company</label><br/>
+    <input id="companyName" th:field="*{jobCompanyId.name}" type="text" placeholder="Company Name"/><br/><br/>
+
+    <div style="text-align:center; margin-top:16px;">
+        <button type="submit">Save</button>
+    </div>
+</form>
+
+<!-- jQuery + Summernote Lite JS (via WebJars) -->
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/summernote/dist/summernote-lite.min.js}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      $('#content').summernote({
+        height: 200,
+        placeholder: 'Write the job description...',
+        toolbar: [
+          ['style', ['bold', 'italic', 'underline', 'clear']],
+          ['para',  ['ul', 'ol', 'paragraph']],
+          ['insert',['link']],
+          ['view',  ['fullscreen', 'codeview']]
+        ]
+      });
+    });
+</script>
+</body>
+</html>
