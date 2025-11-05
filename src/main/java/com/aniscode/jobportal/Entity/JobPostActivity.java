@@ -24,7 +24,7 @@ public class JobPostActivity {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "jobCompanyId", referencedColumnName = "Id")
-    private JobCompany jobCompany;
+    private JobCompany jobCompanyId;
 
     @Transient
     private Boolean isActive;
@@ -50,7 +50,7 @@ public class JobPostActivity {
         this.jobPostId = jobPostId;
         this.postedById = postedById;
         this.jobLocationId = jobLocationId;
-        this.jobCompany = jobCompanyId;
+        this.jobCompanyId = jobCompanyId;
         this.isActive = isActive;
         this.isSaved = isSaved;
         this.descriptionOfJob = descriptionOfJob;
@@ -86,26 +86,26 @@ public class JobPostActivity {
     }
 
     public JobCompany getJobCompanyId() {
-        return jobCompany;
+        return jobCompanyId;
     }
 
     public void setJobCompanyId(JobCompany jobCompanyId) {
-        this.jobCompany = jobCompanyId;
+        this.jobCompanyId = jobCompanyId;
     }
 
-    public Boolean getActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
+    public void setIsActive(Boolean active) {
         isActive = active;
     }
 
-    public Boolean getSaved() {
+    public Boolean getIsSaved() {
         return isSaved;
     }
 
-    public void setSaved(Boolean saved) {
+    public void setIsSaved(Boolean saved) {
         isSaved = saved;
     }
 
@@ -163,7 +163,7 @@ public class JobPostActivity {
                 "jobPostId=" + jobPostId +
                 ", postedById=" + postedById +
                 ", jobLocationId=" + jobLocationId +
-                ", jobCompanyId=" + jobCompany +
+                ", jobCompanyId=" + jobCompanyId +
                 ", isActive=" + isActive +
                 ", isSaved=" + isSaved +
                 ", descriptionOfJob='" + descriptionOfJob + '\'' +
