@@ -6,53 +6,29 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Dashboard</title>
-    <meta charset="utf-8"/>
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
 
 <body>
-<header>
-
-    <button type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-        <span></span>
-    </button>
-
+<header class="navbar navbar-expand-lg navbar-dark">
     <div id="navbarToggler">
         <ul>
-            <li>
-                <a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/dashboard/}">Search for Jobs</a>
-            </li>
-            <li>
-                <a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/saved-jobs/}">View Saved Jobs</a>
-            </li>
-            <li>
-                <a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/job-seeker-profile/}">Edit Profile</a>
-            </li>
-
-            <li>
-                <a sec:authorize="hasAuthority('Recruiter')" th:href="@{/dashboard/add}">Post New Job</a>
-            </li>
-            <li>
-                <a sec:authorize="hasAuthority('Recruiter')" th:href="@{/dashboard/}">View Your Jobs</a>
-            </li>
-            <li>
-                <a sec:authorize="hasAuthority('Recruiter')" th:href="@{/recruiter-profile/}">Edit Account</a>
-            </li>
+            <li><a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/dashboard/}">Search for Jobs</a></li>
+            <li><a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/saved-jobs/}">View Saved Jobs</a></li>
+            <li><a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/job-seeker-profile/}">Edit Profile</a></li>
+            <li><a sec:authorize="hasAuthority('Recruiter')" th:href="@{/dashboard/add}">Post New Job</a></li>
+            <li><a sec:authorize="hasAuthority('Recruiter')" th:href="@{/dashboard/}">View Your Jobs</a></li>
+            <li><a sec:authorize="hasAuthority('Recruiter')" th:href="@{/recruiter-profile/}">Edit Account</a></li>
         </ul>
-        <img
-                class="rounded-circle me-3"
-                height="50px"
-                width="50x"
-                th:if="${user.photosImagePath!=null}"
-                th:src="@{${user?.photosImagePath}}"
-        />
+
+        <img th:if="${user.photosImagePath!=null}"
+             th:src="@{${user?.photosImagePath}}"
+             height="50px" width="50px"/>
 
         <label th:if="${user.firstName != null && user.lastName != null}"
                th:text="${user.firstName+' '+user.lastName}"></label>
-
         <label th:unless="${user.firstName != null && user.lastName != null}"
                th:text="${username}"></label>
 
@@ -61,39 +37,71 @@
 </header>
 
 <section>
-    <div></div>
+    <div>
+        <div sec:authorize="hasAuthority('Job Seeker')">
+            <label>Filter Results</label>
+            <form id="myForm" th:action="@{/dashboard/}">
+                <div>
+                    <label>Employment Type</label>
+                    <div>
+                        <input type="checkbox" th:checked="${partTime}" name="partTime" th:value="Part-Time"/> Part-Time
+                    </div>
+                    <div>
+                        <input type="checkbox" th:checked="${fullTime}" name="fullTime" th:value="Full-Time"/> Full-Time
+                    </div>
+                    <div>
+                        <input type="checkbox" th:checked="${freelance}" name="freelance" th:value="Freelance"/> Freelance
+                    </div>
+                </div>
+
+                <div>
+                    <label>Remote</label>
+                    <div><input type="checkbox" th:checked="${remoteOnly}" name="remoteOnly" th:value="Remote-Only"/> Remote-Only</div>
+                    <div><input type="checkbox" th:checked="${officeOnly}" name="officeOnly" th:value="Office-Only"/> Office-Only</div>
+                    <div><input type="checkbox" th:checked="${partialRemote}" name="partialRemote" th:value="Partial-Remote"/> Partial-Remote</div>
+                </div>
+
+                <div>
+                    <label>Date Posted</label>
+                    <div><input type="checkbox" name="today" th:checked="${today}"/> Today</div>
+                    <div><input type="checkbox" name="days7" th:checked="${days7}"/> Last 7 Days</div>
+                    <div><input type="checkbox" name="days30" th:checked="${days30}"/> Last 30 Days</div>
+                </div>
+
+                <input id="hidJob" name="job" th:value="${job}" hidden>
+                <input id="hidLoc" name="location" th:value="${location}" hidden>
+            </form>
+        </div>
+    </div>
+
     <article>
+        <div sec:authorize="hasAuthority('Job Seeker')">
+            <h1>Candidate Dashboard</h1>
+            <div>
+                <input id="job" type="text" placeholder="Search for a job" name="job" th:value="${job}"/>
+                <input id="loc" type="text" placeholder="Job Location" name="location" th:value="${location}"/>
+                <button type="submit" form="myForm">Search</button>
+            </div>
+        </div>
+
         <div sec:authorize="hasAuthority('Recruiter')">
             <h1>Recruiter Dashboard</h1>
         </div>
+
         <div>
             <label sec:authorize="hasAuthority('Job Seeker')">Search Results</label>
             <th:block th:each="jobPost:${jobPost}">
                 <a th:href="@{/job-details-apply/{id}(id=${jobPost.jobPostId})}">
-                    <div onclick="window.location=/job-details-apply/{id}(id=${jobPost.jobPostId})">
-                        <div>
-                            <div>
-                                <label>
-                                    [[${jobPost.jobTitle}]]
-                                    <span sec:authorize="hasAuthority('Recruiter')"
-                                          th:text="'('+ @{${jobPost.totalCandidates}}+' Candidates Applied)'">
-                                        (xx candidates applied)
-                                    </span>
-                                    <span sec:authorize="hasAuthority('Job Seeker')"
-                                          th:if="${jobPost.isActive == true}">(Applied)</span>
-                                    <span sec:authorize="hasAuthority('Job Seeker')"
-                                          th:if="${jobPost.isSaved == true}">(Saved)</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label th:text="${jobPost.jobLocationId.city+', '+ jobPost.jobLocationId.state}">
-                                    City State
-                                </label>
-                            </div>
-                            <div>
-                                <label th:text="@{${jobPost.jobCompanyId.name}}">Recruiter Company Name</label>
-                            </div>
-                        </div>
+                    <div>
+                        <label>
+                            [[${jobPost.jobTitle}]]
+                            <span sec:authorize="hasAuthority('Recruiter')"
+                                  th:text="'('+ @{${jobPost.totalCandidates}}+' Candidates Applied)'"></span>
+                            <span sec:authorize="hasAuthority('Job Seeker')" th:if="${jobPost.isActive == true}">(Applied)</span>
+                            <span sec:authorize="hasAuthority('Job Seeker')" th:if="${jobPost.isSaved == true}">(Saved)</span>
+                        </label>
+                        <label th:text="${jobPost.jobLocationId.city+', '+ jobPost.jobLocationId.state}"></label>
+                        <label th:text="@{${jobPost.jobCompanyId.name}}"></label>
                     </div>
                 </a>
             </th:block>
@@ -101,7 +109,17 @@
     </article>
 </section>
 
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+
+<script>
+    $('#job').change(function() {
+      $('#hidJob').val($(this).val());
+    });
+    $('#loc').change(function() {
+      $('#hidLoc').val($(this).val());
+    });
+</script>
 </body>
 </html>
