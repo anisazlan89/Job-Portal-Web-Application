@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      style="height: 100%">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Candidate Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+
+<body th:object="${jobDetails}" style="height: 100%">
+
+<header>
+    <label><a th:href="@{/dashboard/}">hotdevjobs</a><span>.com</span></label>
+
+    <button type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span></span>
+    </button>
+
+    <div id="navbarToggler">
+        <ul>
+            <li>
+                <a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/dashboard/}">Search for Jobs</a>
+            </li>
+            <li>
+                <a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/saved-jobs/}">View Saved Jobs</a>
+            </li>
+            <li>
+                <a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/job-seeker-profile/}">Edit Profile</a>
+            </li>
+
+            <li>
+                <a sec:authorize="hasAuthority('Recruiter')" th:href="@{/dashboard/add}">Post New Job</a>
+            </li>
+            <li>
+                <a sec:authorize="hasAuthority('Recruiter')" th:href="@{/dashboard/}">View Your Jobs</a>
+            </li>
+            <li>
+                <a sec:authorize="hasAuthority('Recruiter')" th:href="@{/recruiter-profile/}">Edit Account</a>
+            </li>
+        </ul>
+
+        <img height="50px" width="50x" th:src="@{${user.photosImagePath}}"/>
+        <label th:text="${user.firstName+' '+user.lastName}">John Doe</label>
+
+        <button onclick="window.location.href='/logout'">Logout</button>
+    </div>
+</header>
+
+<section>
+    <div></div>
+    <article>
+        <div>
+            <a id="back-link">Back to Search Results</a>
+            <h1>Job Details</h1>
+            <div>
+                <h4 th:text="${jobDetails.jobTitle}">Software Engineer</h4>
+                <div>
+                    <p th:text="${jobDetails.jobLocationId.city+', '+ jobDetails.jobLocationId.state}">California, USA</p>
+                    <p th:text="${jobDetails.jobCompanyId.name}">Company</p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <label>Job Specs</label>
+
+            <div>
+                <div>
+                    <div>
+                        <label>Date Posted: <span th:text="${jobDetails.postedDate}">12 Nov, 2030</span></label>
+                    </div>
+                    <div>
+                        <label>Salary: <span th:text="${jobDetails.salary}">50k - 120k/y</span></label>
+                    </div>
+                    <div>
+                        <label>Type: <span th:text="${jobDetails.jobType}">Full-time</span></label>
+                    </div>
+                    <div>
+                        <label>Remote: <span th:text="${jobDetails.remote}">Remote</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div sec:authorize="hasAuthority('Job Seeker')">
+                <label>Job Description</label>
+                <div th:utext="${jobDetails.descriptionOfJob}"></div>
+            </div>
+
+            <div sec:authorize="hasAuthority('Recruiter')">
+                <div>
+                    <div>
+                        <label>Job Description</label>
+                        <div th:utext="${jobDetails.descriptionOfJob}"></div>
+                    </div>
+                    <div>
+                        <div>
+                            <label>Candidates Applied for Job</label>
+                            <th:block th:each="applyList:${applyList}">
+                                <a th:href="@{/job-seeker-profile/{id}(id=${applyList.userId.userAccountId})}"
+                                   th:text="${applyList.userId.firstName+', '+applyList.userId.lastName}">
+                                    FirstName, LastName
+                                </a>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div sec:authorize="hasAuthority('Job Seeker')">
+                <div>
+                    <div>
+                        <form th:action="@{/job-details/apply/{id}(id=${jobDetails.jobPostId})}" th:object="${applyJob}" method="post">
+                            <button type="submit" th:if="${alreadyApplied == false}">Apply Now</button>
+                            <button disabled th:if="${alreadyApplied == true}">Already Applied</button>
+                        </form>
+                    </div>
+                    <div>
+                        <form th:action="@{/job-details/save/{id}(id=${jobDetails.jobPostId})}" th:object="${applyJob}" method="post">
+                            <button type="submit" th:if="${alreadySaved == false}">Save Job</button>
+                            <button disabled th:if="${alreadySaved == true}">Already Saved</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div sec:authorize="hasAuthority('Recruiter')">
+                <div>
+                    <div>
+                        <form th:action="@{/dashboard/edit/{id}(id=${jobDetails.jobPostId})}" method="post">
+                            <button type="submit">Edit Job</button>
+                        </form>
+                    </div>
+                    <div>
+                        <form th:action="@{/dashboard/deleteJob/{id}(id=${jobDetails.jobPostId})}" method="post">
+                            <button type="submit">Delete Job</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </article>
+</section>
+
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+<script>
+    var element = document.getElementById('back-link');
+    element.setAttribute('href', document.referrer);
+    element.onclick = function() {
+        history.back();
+        return false;
+    }
+</script>
+</body>
+</html>

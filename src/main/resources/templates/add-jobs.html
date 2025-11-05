@@ -15,9 +15,9 @@
 <form th:action="@{/dashboard/addNew}" th:object="${jobPostActivity}" method="post">
 
     <!-- Hidden IDs (keep if your controller expects them) -->
-    <input type="text" th:field="*{jobPostId}" hidden />
-    <input type="text" th:field="*{jobLocationId.id}" hidden />
-    <input type="text" th:field="*{jobCompanyId.id}" hidden />
+    <input type="hidden" th:field="*{jobPostId}"  />
+    <input type="hidden" th:field="*{jobLocationId.id}"  />
+    <input type="hidden" th:field="*{jobCompanyId.id}"  />
 
     <label for="title">Job Title</label><br/>
     <input id="title" type="text" th:field="*{jobTitle}" placeholder="Job Title"/><br/><br/>
