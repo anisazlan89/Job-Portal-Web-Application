@@ -5,12 +5,15 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"userId", "job"})})
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"userId", "job"})
+})
 public class JobSeekerSave implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", referencedColumnName = "user_account_id")
     private JobSeekerProfile userId;
@@ -56,8 +59,9 @@ public class JobSeekerSave implements Serializable {
     public String toString() {
         return "JobSeekerSave{" +
                 "id=" + id +
-                ", userId=" + userId +
-                ", job=" + job +
+                ", userId=" + userId.toString() +
+                ", job=" + job.toString() +
                 '}';
     }
 }
+

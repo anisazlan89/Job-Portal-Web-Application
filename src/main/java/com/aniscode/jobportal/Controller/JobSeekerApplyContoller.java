@@ -114,4 +114,5 @@ public class JobSeekerApplyContoller {
 
         return "redirect:/dashboard/";
     }
+
 }

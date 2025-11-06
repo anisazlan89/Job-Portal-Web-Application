@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="IE=edge"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+
+<body>
+<header>
+    <div id="navbarToggler">
+        <ul>
+            <li>
+                <a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/dashboard/}">
+                    Search for Jobs
+                </a>
+            </li>
+            <li>
+                <a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/saved-jobs/}">
+                    View Saved Jobs
+                </a>
+            </li>
+            <li>
+                <a sec:authorize="hasAuthority('Job Seeker')" th:href="@{/job-seeker-profile/}">
+                    Edit Profile
+                </a>
+            </li>
+        </ul>
+
+        <img th:if="${user.photosImagePath!=null}"
+             th:src="@{${user?.photosImagePath}}"
+             height="50" width="50"/>
+
+        <label th:if="${user.firstName != null && user.lastName != null}"
+               th:text="${user.firstName+' '+user.lastName}">
+        </label>
+
+        <button onclick="window.location.href='/logout'">Logout</button>
+    </div>
+</header>
+
+<section>
+    <div>
+        <div sec:authorize="hasAuthority('Job Seeker')">
+            <hr/>
+        </div>
+    </div>
+
+    <article>
+        <div>
+            <h1>Saved Jobs</h1>
+        </div>
+
+        <div>
+            <label>Results</label>
+            <th:block th:each="jobPost:${jobPost}">
+                <a th:href="@{/job-details-apply/{id}(id=${jobPost.jobPostId})}">
+                    <div onclick="window.location=/job-details-apply/{id}(id=${jobPost.jobPostId})">
+                        <div>
+                            <div>
+                                <label>
+                                    [[${jobPost.jobTitle}]]
+                                    <span sec:authorize="hasAuthority('Recruiter')"
+                                          th:text="'(' + @{${jobPost.totalCandidates}} + ' Candidates Applied)'">
+                                        (xx candidates applied)
+                                    </span>
+                                    <span sec:authorize="hasAuthority('Job Seeker')"
+                                          th:if="${jobPost.isActive}">(Applied)</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label th:text="${jobPost.jobLocationId.city + ', ' + jobPost.jobLocationId.state}">
+                                    City State
+                                </label>
+                            </div>
+                            <div>
+                                <label th:text="@{${jobPost.jobCompanyId.name}}">
+                                    Recruiter Company Name
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </th:block>
+        </div>
+    </article>
+</section>
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+
+<script>
+    $('#job').change(function() { $('#hidJob').val($(this).val()); });
+    $('#loc').change(function() { $('#hidLoc').val($(this).val()); });
+</script>
+</body>
+</html>
