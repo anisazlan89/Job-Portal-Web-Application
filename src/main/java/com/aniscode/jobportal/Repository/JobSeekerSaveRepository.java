@@ -14,4 +14,6 @@ public interface JobSeekerSaveRepository extends JpaRepository <JobSeekerSave, I
      List<JobSeekerSave> findByUserId(JobSeekerProfile userAccountId);
 
     List<JobSeekerSave> findByJob(JobPostActivity job);
+
+    /*boolean existsByUserIdAndJob(JobSeekerProfile user, JobPostActivity job);*/
 }
